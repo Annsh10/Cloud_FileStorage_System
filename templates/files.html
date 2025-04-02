@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Your Files | CloudFile Manager</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --primary: #4361ee;
+        --primary-light: #4895ef;
+        --danger: #f72585;
+        --success: #4cc9f0;
+        --light: #f8f9fa;
+        --dark: #212529;
+        --gray: #6c757d;
+        --border-radius: 12px;
+        --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(135deg, #f5f7fa 0%, #e6e9f0 100%);
+        min-height: 100vh;
+        color: var(--dark);
+        line-height: 1.6;
+        padding: 0;
+        margin: 0;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--primary);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .file-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+      }
+
+      h1 {
+        color: var(--primary);
+        font-weight: 600;
+        margin: 0;
+      }
+
+      .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      .file-card {
+        background: white;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        overflow: hidden;
+        padding: 1rem;
+      }
+
+      .file-table {
+        width: 106%;
+        border-collapse: separate;
+        border-spacing: 0;
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        table-layout: var(--border-radius);
+      }
+
+      .file-table thead {
+        background: var(--primary);
+        color: white;
+      }
+
+      .file-table th {
+        padding: 1rem 1.5rem;
+        text-align: left;
+        font-weight: 500;
+      }
+
+      .file-table td {
+        padding: 1.2rem 1.5rem;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      }
+
+      .file-table tr:last-child td {
+        border-bottom: none;
+      }
+
+      .file-table tr:hover {
+        background: rgba(67, 97, 238, 0.03);
+      }
+
+      .action-buttons {
+        display: flex;
+        gap: 0.8rem;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        flex-wrap: nowrap !important;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.6rem 1.2rem;
+        border-radius: 50px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.3s;
+        border: none;
+        cursor: pointer;
+        min-width: 110px;
+      }
+
+      .btn i {
+        font-size: 0.9rem;
+      }
+
+      .btn-download {
+        background: #28a745;
+        color: white;
+      }
+
+      .btn-download:hover {
+        background: #218838;
+        transform: translateY(-2px);
+      }
+
+      .btn-share {
+        background: #007bff;
+        color: white;
+      }
+
+      .btn-share:hover {
+        background: #0056b3;
+        transform: translateY(-2px);
+      }
+
+      .btn-delete {
+        background: #dc3545;
+        color: white;
+      }
+
+      .btn-delete:hover {
+        background: #c82333;
+        transform: translateY(-2px);
+      }
+
+      .btn-versions {
+        background: #6c757d;
+        color: white;
+      }
+
+      .btn-versions:hover {
+        background: #5a6268;
+        transform: translateY(-2px);
+      }
+
+      .btn-preview {
+        all: unset;
+        display: flex;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background-color: #17a2b8;
+        color: white;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+
+      .btn-preview:hover {
+        background-color: #138496; /* Darker shade for hover */
+        transform: scale(1.05);
+      }
+
+      .btn-preview i {
+        font-size: 16px;
+      }
+
+      /* Version history styles */
+      .version-history {
+        margin-top: 1rem;
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: var(--border-radius);
+        display: none;
+      }
+
+      .version-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .version-table th {
+        padding: 0.75rem;
+        text-align: left;
+        background: #6c757d;
+        font-weight: 500;
+      }
+
+      .version-table td {
+        padding: 0.75rem;
+        border-bottom: 1px solid #dee2e6;
+      }
+
+      .version-badge {
+        display: inline-block;
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
+        border-radius: 50px;
+        background: var(--primary-light);
+        color: white;
+        margin-left: 0.5rem;
+      }
+
+      .current-version {
+        background: var(--success);
+      }
+
+      /* Alert styles */
+      .alert {
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+        border-radius: var(--border-radius);
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .alert-success {
+        background: #d4edda;
+        color: #155724;
+      }
+
+      .alert-error {
+        background: #f8d7da;
+        color: #721c24;
+      }
+
+      /* Empty state */
+      .empty-state {
+        text-align: center;
+        padding: 3rem;
+        background: white;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+      }
+
+      .empty-state i {
+        font-size: 3rem;
+        color: var(--gray);
+        margin-bottom: 1rem;
+      }
+
+      .empty-state h3 {
+        color: var(--dark);
+        margin-bottom: 0.5rem;
+      }
+
+      .empty-state p {
+        color: var(--gray);
+        margin-bottom: 1.5rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <a href="/" class="logo">
+          <i class="fas fa-cloud-upload-alt"></i>
+          CloudFile
+        </a>
+        <a href="/" class="back-btn">
+          <i class="fas fa-arrow-left"></i> Back to Upload
+        </a>
+      </header>
+
+      <main>
+        <div class="file-header">
+          <h1><i class="fas fa-folder-open"></i> Your Files</h1>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %} {% if
+        messages %} {% for category, message in messages %}
+        <div
+          class="alert alert-{{ 'success' if category == 'success' else 'error' }}"
+        >
+          <i
+            class="fas {% if category == 'success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %}"
+          ></i>
+          {{ message }}
+        </div>
+        {% endfor %} {% endif %} {% endwith %} {% if files %}
+        <div class="table-container">
+          <table class="file-table">
+            <thead>
+              <tr>
+                <th>File</th>
+                <th>Size</th>
+                <th>Last Modified</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for file in files %}
+              <tr>
+                <td>
+                  <div class="file-name" title="{{ file.name }}">
+                    <i
+                      class="fas {% if file.name.endswith('.pdf') %}fa-file-pdf {% elif file.name.endswith(('.doc', '.docx')) %}fa-file-word {% elif file.name.endswith(('.jpg', '.jpeg', '.png', '.gif')) %}fa-file-image {% elif file.name.endswith(('.zip', '.rar')) %}fa-file-archive {% else %}fa-file-alt{% endif %} file-icon"
+                    ></i>
+                    <span>{{ file.name }}</span>
+                    {% if file.versions %}
+                    <span class="version-badge"
+                      >{{ file.versions|length }} version{% if
+                      file.versions|length > 1 %}s{% endif %}</span
+                    >
+                    {% endif %}
+                  </div>
+                </td>
+                <td>{{ (file.size / 1024)|round(2) }} KB</td>
+                <td>
+                  {{ file.last_modified if file.last_modified else 'N/A' }}
+                </td>
+                <td>
+                  <div class="action-buttons">
+                    <!-- Preview Button (For Images, PDFs, and Text) -->
+                    {% if file.name.endswith(('.jpg', '.jpeg', '.png', '.gif',
+                    '.pdf', '.txt')) %}
+                    <a
+                      href="{{ url_for('preview', blob_path=file.path) }}"
+                      target="_blank"
+                      class="btn btn-preview"
+                      title="Preview"
+                    >
+                      <i class="fas fa-eye"></i>
+                    </a>
+                    {% endif %}
+                    <a
+                      href="{{ url_for('download', blob_path=file.path) }}"
+                      class="btn btn-download"
+                      title="Download"
+                    >
+                      <i class="fas fa-download"></i>
+                      <span>Download</span>
+                    </a>
+
+                    <button
+                      onclick="toggleVersions('{{ file.path | replace('/', '-') }}')"
+                      class="btn btn-versions"
+                      title="View Versions"
+                    >
+                      <i class="fas fa-history"></i>
+                      <span>Versions</span>
+                    </button>
+                    <form
+                      action="{{ url_for('delete', blob_path=file.path) }}"
+                      method="POST"
+                      style="display: inline"
+                      onsubmit="return confirm('Are you sure you want to delete this file?')"
+                    >
+                      <button
+                        type="submit"
+                        class="btn btn-delete"
+                        title="Delete"
+                      >
+                        <i class="fas fa-trash-alt"></i>
+                        <span>Delete</span>
+                      </button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+              {% if file.versions %}
+              <tr
+                id="versions-{{ file.path | replace('/', '-') }}"
+                class="version-row"
+              >
+                <td colspan="4">
+                  <div class="version-history">
+                    <h4><i class="fas fa-history"></i> Version History</h4>
+                    <table class="version-table">
+                      <thead>
+                        <tr>
+                          <th>Version ID</th>
+                          <th>Modified</th>
+                          <th>Size</th>
+                          <th>Status</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for version in file.versions %}
+                        <tr>
+                          <td>{{ version.version_id }}</td>
+                          <td>{{ version.last_modified }}</td>
+                          <td>{{ (version.size / 1024)|round(2) }} KB</td>
+                          <td>
+                            {% if version.is_current %}
+                            <span class="version-badge current-version"
+                              >Current</span
+                            >
+                            {% else %}
+                            <span class="version-badge">Previous</span>
+                            {% endif %}
+                          </td>
+                          <td>
+                            <a
+                              href="{{ url_for('download_version', blob_path=file.path, version_id=version.version_id) }}"
+                              class="btn btn-download"
+                              style="min-width: auto; padding: 0.4rem 0.8rem"
+                            >
+                              <i class="fas fa-download"></i>
+                              <span>Download</span>
+                            </a>
+                          </td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </td>
+              </tr>
+              {% endif %} {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <div class="empty-state">
+          <i class="fas fa-folder-open"></i>
+          <h3>No Files Found</h3>
+          <p>Upload your first file to get started</p>
+          <a href="/" class="btn btn-primary">
+            <i class="fas fa-upload"></i> Upload Files
+          </a>
+        </div>
+        {% endif %}
+      </main>
+    </div>
+
+    <script>
+      function toggleVersions(filename) {
+        const versionRow = document.getElementById(`versions-${filename}`);
+        if (versionRow) {
+          const versionHistory = versionRow.querySelector(".version-history");
+          versionHistory.style.display =
+            versionHistory.style.display === "block" ? "none" : "block";
+        }
+      }
+
+      // Close all version histories when clicking outside
+      document.addEventListener("click", function (event) {
+        if (
+          !event.target.closest(".btn-versions") &&
+          !event.target.closest(".version-history")
+        ) {
+          document.querySelectorAll(".version-history").forEach((el) => {
+            el.style.display = "none";
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

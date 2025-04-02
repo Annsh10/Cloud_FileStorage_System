@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CloudFile Manager | Secure File Storage</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --primary: #4361ee;
+        --secondary: #3f37c9;
+        --accent: #4895ef;
+        --light: #f8f9fa;
+        --dark: #212529;
+        --success: #4cc9f0;
+        --danger: #f72585;
+        --border-radius: 12px;
+        --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Smooth Scrolling */
+      html {
+        scroll-behavior: smooth;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        min-height: 100vh;
+        color: var(--dark);
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 0;
+        margin-bottom: 3rem;
+      }
+
+      .logo {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--primary);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .logo-icon {
+        font-size: 2.2rem;
+      }
+
+      nav a {
+        color: var(--dark);
+        text-decoration: none;
+        margin-left: 1.5rem;
+        font-weight: 500;
+        transition: color 0.3s;
+      }
+
+      nav a:hover {
+        color: var(--primary);
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+        align-items: center;
+        margin-bottom: 4rem;
+      }
+
+      .hero-content h1 {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        line-height: 1.2;
+      }
+
+      .hero-content p {
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+        color: #555;
+      }
+
+      .hero-image {
+        width: 100%;
+        height: auto;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        object-fit: cover;
+        aspect-ratio: 1/1;
+        max-height: 450px;
+      }
+
+      /* Fixed Upload Section */
+      .upload-container {
+        background: white;
+        border-radius: var(--border-radius);
+        padding: 2.5rem;
+        box-shadow: var(--box-shadow);
+        margin-bottom: 3rem;
+        text-align: center;
+      }
+
+      .upload-container h2 {
+        font-size: 1.8rem;
+        margin-bottom: 1.5rem;
+        color: var(--primary);
+      }
+
+      .upload-box {
+        border: 2px dashed #ccc;
+        border-radius: var(--border-radius);
+        padding: 3rem 2rem;
+        margin: 2rem auto;
+        transition: all 0.3s;
+        cursor: pointer;
+        min-height: 200px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        max-width: 600px;
+      }
+
+      .upload-box:hover {
+        border-color: var(--primary);
+        background: rgba(67, 97, 238, 0.05);
+      }
+
+      .upload-box i {
+        font-size: 3rem;
+        color: var(--primary);
+        margin-bottom: 1rem;
+      }
+
+      .file-input {
+        display: none;
+      }
+
+      .btn {
+        display: inline-block;
+        background: var(--primary);
+        color: white;
+        padding: 0.8rem 2rem;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 500;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-size: 1rem;
+      }
+
+      .btn:hover {
+        background: var(--secondary);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .btn-outline {
+        background: transparent;
+        border: 2px solid var(--primary);
+        color: var(--primary);
+      }
+
+      .btn-outline:hover {
+        background: var(--primary);
+        color: white;
+      }
+
+      .features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-bottom: 4rem;
+      }
+
+      .feature-card {
+        background: white;
+        border-radius: var(--border-radius);
+        padding: 2rem;
+        box-shadow: var(--box-shadow);
+        transition: transform 0.3s;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-10px);
+      }
+
+      .feature-card i {
+        font-size: 2rem;
+        color: var(--primary);
+        margin-bottom: 1rem;
+      }
+
+      .feature-card h3 {
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+      }
+
+      .alert {
+        padding: 1rem;
+        border-radius: var(--border-radius);
+        margin: 1rem 0;
+      }
+
+      .alert-success {
+        background: rgba(76, 201, 240, 0.2);
+        color: #0a9396;
+      }
+
+      .alert-error {
+        background: rgba(247, 37, 133, 0.2);
+        color: #ae2012;
+      }
+
+      footer {
+        text-align: center;
+        padding: 2rem 0;
+        margin-top: 3rem;
+        color: #666;
+      }
+
+      @media (max-width: 768px) {
+        .hero {
+          grid-template-columns: 1fr;
+        }
+
+        header {
+          flex-direction: column;
+          gap: 1rem;
+        }
+
+        nav {
+          margin-top: 1rem;
+        }
+
+        .upload-box {
+          padding: 2rem 1rem;
+          min-height: 150px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <a href="/" class="logo">
+          <i class="fas fa-cloud-upload-alt logo-icon"></i>
+          CloudFile
+        </a>
+        <nav>
+          <a href="/">Home</a>
+          <a href="/files">My Files</a>
+          <a href="#features">Features</a>
+        </nav>
+      </header>
+
+      <section class="hero">
+        <div class="hero-content">
+          <h1>Secure Cloud Storage for Your Important Files</h1>
+          <p>
+            Upload, manage, and check versions of your files with our secure
+            Azure-powered storage solution. Access your documents from anywhere,
+            anytime.
+          </p>
+          <a href="/files" class="btn">View My Files</a>
+        </div>
+        <div class="hero-image-container">
+          <img
+            src="../static/images/hero-img2.jpg"
+            alt="Cloud storage illustration"
+            class="hero-image"
+          />
+        </div>
+      </section>
+
+      <section class="upload-container">
+        <h2>Upload Your Files</h2>
+
+        {% with messages = get_flashed_messages(with_categories=true) %} {% if
+        messages %} {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %} {% endif %} {% endwith %}
+
+        <form method="POST" action="/upload" enctype="multipart/form-data">
+          <label for="file-upload" class="upload-box">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <p>Drag & drop files here or click to browse</p>
+            <small>Supports PDF, DOCX, JPG, PNG (Max 100MB)</small>
+          </label>
+          <input id="file-upload" type="file" name="file" class="file-input" />
+          <button type="submit" class="btn" style="margin-top: 1rem">
+            Upload File
+          </button>
+        </form>
+      </section>
+
+      <section id="features" class="features">
+        <div class="feature-card">
+          <i class="fas fa-shield-alt"></i>
+          <h3>Secure Storage</h3>
+          <p>
+            Your files are encrypted and stored securely in Microsoft Azure's
+            global infrastructure.
+          </p>
+        </div>
+        <div class="feature-card">
+          <i class="fas fa-mobile-alt"></i>
+          <h3>Access Anywhere</h3>
+          <p>
+            Retrieve your files from any device with an internet connection.
+          </p>
+        </div>
+        <div class="feature-card">
+          <i class="fas fa-history"></i>
+          <h3>Version History</h3>
+          <p>Track changes and restore previous versions of your documents.</p>
+        </div>
+      </section>
+    </div>
+
+    <footer>
+      <p>&copy; 2025 CloudFile Manager. All rights reserved.</p>
+    </footer>
+
+    <script>
+      // Enhanced file upload display
+      const fileInput = document.getElementById("file-upload");
+      const uploadBox = document.querySelector(".upload-box");
+
+      fileInput.addEventListener("change", function (e) {
+        if (this.files.length > 0) {
+          const file = this.files[0];
+          let fileIcon = "fa-file-alt";
+
+          // Set appropriate icon based on file type
+          if (file.type.includes("image/")) {
+            fileIcon = "fa-file-image";
+          } else if (file.type.includes("pdf")) {
+            fileIcon = "fa-file-pdf";
+          } else if (
+            file.type.includes("word") ||
+            file.type.includes("document")
+          ) {
+            fileIcon = "fa-file-word";
+          }
+
+          uploadBox.innerHTML = `
+                    <i class="fas ${fileIcon}" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;"></i>
+                    <p>${file.name}</p>
+                    <small>${(file.size / (1024 * 1024)).toFixed(2)} MB</small>
+                `;
+        }
+      });
+
+      // Drag and drop functionality
+      uploadBox.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        uploadBox.style.borderColor = "var(--primary)";
+        uploadBox.style.backgroundColor = "rgba(67, 97, 238, 0.05)";
+      });
+
+      uploadBox.addEventListener("dragleave", () => {
+        uploadBox.style.borderColor = "#ccc";
+        uploadBox.style.backgroundColor = "transparent";
+      });
+
+      uploadBox.addEventListener("drop", (e) => {
+        e.preventDefault();
+        uploadBox.style.borderColor = "#ccc";
+        uploadBox.style.backgroundColor = "transparent";
+
+        if (e.dataTransfer.files.length) {
+          fileInput.files = e.dataTransfer.files;
+          const event = new Event("change");
+          fileInput.dispatchEvent(event);
+        }
+      });
+    </script>
+    <script>
+      // Enhanced smooth scrolling with offset for fixed headers
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          const targetId = this.getAttribute("href");
+          if (targetId === "#") return;
+
+          const targetElement = document.querySelector(targetId);
+          if (targetElement) {
+            const headerOffset = 100; // Adjust if you have a fixed header
+            const elementPosition = targetElement.getBoundingClientRect().top;
+            const offsetPosition =
+              elementPosition + window.pageYOffset - headerOffset;
+
+            window.scrollTo({
+              top: offsetPosition,
+              behavior: "smooth",
+            });
+
+            // Update URL without jumping
+            history.pushState(null, null, targetId);
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

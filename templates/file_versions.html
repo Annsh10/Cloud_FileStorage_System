@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>File Versions</title>
+</head>
+<body>
+    <h1>Versions of {{ filename }}</h1>
+    <ul>
+        {% for version in versions %}
+            <li>
+                Version ID: {{ version.version_id }} 
+                (Last Modified: {{ version.last_modified }})
+                <a href="/download/{{ filename }}?version_id={{ version.version_id }}">Download</a>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="/files">Back to Files</a>
+</body>
+</html>
